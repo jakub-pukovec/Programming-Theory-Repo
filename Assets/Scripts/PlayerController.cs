@@ -9,8 +9,8 @@ public class PlayerController : MonoBehaviour
     private float _horizontalMovement;
     private float _originalScaleX;
 
-    [SerializeField] private float _movementSpeed = 5f;
-    [SerializeField] private float _jumpForce = 100f;
+    [SerializeField] private float _movementSpeed = 1.5f;
+    [SerializeField] private float _jumpForce = 3.5f;
     [SerializeField] private LayerMask _groundMask;
     [SerializeField] BoxCollider2D _boxCollider;
 
@@ -32,6 +32,25 @@ public class PlayerController : MonoBehaviour
         FlipBasedOnHorizontalDirection();
     }
 
+    private void FixedUpdate()
+    {
+        TreatJumpIfNeeded();
+
+        _rigidbody.velocity = new Vector2(_horizontalMovement * _movementSpeed, _rigidbody.velocity.y);
+    }
+
+    private void TreatJumpIfNeeded()
+    {
+        if (_jumpTriggered)
+        {
+            _jumpTriggered = false;
+            if (IsGrounded())
+            {
+                _rigidbody.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
+            }
+        }
+    }
+
     private void FlipBasedOnHorizontalDirection()
     {
         if (_horizontalMovement == 0f)
@@ -40,21 +59,6 @@ public class PlayerController : MonoBehaviour
         Vector3 localScale = transform.localScale;
         localScale.x = _originalScaleX * Mathf.Sign(_horizontalMovement);
         transform.localScale = localScale;
-    }
-
-    private void FixedUpdate()
-    {
-        if (_jumpTriggered)
-        {
-            _jumpTriggered = false;
-            if (IsGrounded())
-            {
-                _rigidbody.AddForce(Vector2.up * _jumpForce * Time.fixedDeltaTime, ForceMode2D.Impulse);
-            }
-        }
-
-        _rigidbody.velocity = new Vector2(_horizontalMovement * _movementSpeed, _rigidbody.velocity.y);
-        _horizontalMovement = 0;
     }
 
     private bool IsGrounded()

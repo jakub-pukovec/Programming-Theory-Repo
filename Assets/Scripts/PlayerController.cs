@@ -74,6 +74,14 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (IsTouchingGroundLayer(collision))
+        {
+            _collidingWithGround = true;
+        }
+    }
+
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (IsTouchingGroundLayer(collision))

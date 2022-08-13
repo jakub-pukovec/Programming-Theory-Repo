@@ -1,35 +1,45 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
     private Rigidbody2D _rigidbody;
+    private bool _jumpTriggered;
+    private bool _collidingWithGround;
+    private float _horizontalMovement;
+    private float _originalScaleX;
 
     [SerializeField] private float _movementSpeed = 5f;
     [SerializeField] private float _jumpForce = 100f;
     [SerializeField] private LayerMask _groundMask;
-    [SerializeField] private float _groundDetectionTolerance = 0.1f;
     [SerializeField] BoxCollider2D _boxCollider;
-
-    private bool _jumpTriggered;
-
-    private bool _collidingWithGround;
-    private float _horizontalMovement;
 
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
+        _originalScaleX = MathF.Abs(transform.localScale.x);
     }
 
     private void Update()
     {
-        _horizontalMovement += Input.GetAxis("Horizontal") * Time.deltaTime;
+        _horizontalMovement = Input.GetAxis("Horizontal");
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
             _jumpTriggered = true;
         }
+
+        FlipBasedOnHorizontalDirection();
+    }
+
+    private void FlipBasedOnHorizontalDirection()
+    {
+        if (_horizontalMovement == 0f)
+            return;
+
+        Vector3 localScale = transform.localScale;
+        localScale.x = _originalScaleX * Mathf.Sign(_horizontalMovement);
+        transform.localScale = localScale;
     }
 
     private void FixedUpdate()

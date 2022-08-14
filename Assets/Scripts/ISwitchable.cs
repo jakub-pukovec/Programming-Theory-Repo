@@ -1,3 +1,4 @@
+//ABSTRACTION
 public interface ISwitchable
 {
     bool IsSwitchedOn { get; }

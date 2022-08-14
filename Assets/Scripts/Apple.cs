@@ -1,3 +1,4 @@
+//INHERITANCE
 public class Apple : Fruit
 {
     protected override int ScorePoints => 10;

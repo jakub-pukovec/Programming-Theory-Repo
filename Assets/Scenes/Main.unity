@@ -987,6 +987,7 @@ MonoBehaviour:
   _smoothDampTime: 2
   _waypointWaitTime: 1
   _isMoving: 0
+  _deadZone: 0.02
 --- !u!1 &639867123
 GameObject:
   m_ObjectHideFlags: 0

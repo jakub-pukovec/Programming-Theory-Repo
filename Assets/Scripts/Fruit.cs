@@ -2,11 +2,12 @@ using TMPro;
 using UnityEngine;
 
 //Abstraction
+//Inheritance in all derived classes plus also in this one
 public abstract class Fruit : MonoBehaviour
 {
     private TMP_Text _scoreText;
     private TMP_Text _infoTitleText;
-    private TMP_Text _infoScoreText;
+    private TMP_Text _infoDescriptionText;
     private GameObject _itemInfo;
     private ScoreManager _scoreManager;
 
@@ -18,7 +19,7 @@ public abstract class Fruit : MonoBehaviour
         _scoreText = GameObject.Find("ScoreCanvas").transform.Find("ScoreText").GetComponent<TMP_Text>();
         _itemInfo = GameObject.Find("ItemInfo");
         _infoTitleText = _itemInfo.transform.Find("TitleText").GetComponent<TMP_Text>();
-        _infoScoreText = _itemInfo.transform.Find("ScoreText").GetComponent<TMP_Text>();
+        _infoDescriptionText = _itemInfo.transform.Find("ScoreText").GetComponent<TMP_Text>();
     }
 
     private void Start()
@@ -54,7 +55,7 @@ public abstract class Fruit : MonoBehaviour
         _itemInfo.transform.position = transform.position + Vector3.up * .35f;
         _itemInfo.SetActive(true);
         _infoTitleText.text = Name;
-        _infoScoreText.text = $"Adds to Score: {ScorePoints}";
+        _infoDescriptionText.text = $"Adds to Score: {ScorePoints}";
     }
 
     private void OnMouseExit()

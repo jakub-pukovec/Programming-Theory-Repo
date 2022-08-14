@@ -78,11 +78,6 @@ public class PlayerController : MonoBehaviour
         {
             fruit.Pickup();
         }
-
-        if (collision.CompareTag("Platform"))
-        {
-            transform.SetParent(collision.transform);
-        }
     }
 
     private void OnTriggerStay2D(Collider2D collision)
@@ -91,6 +86,16 @@ public class PlayerController : MonoBehaviour
         {
             _collidingWithGround = true;
         }
+
+        if (collision.CompareTag("Platform"))
+        {
+            IVelocity platformVelocity = collision.GetComponent<IVelocity>();
+            if (platformVelocity != null)
+            {
+                //Debug.Log(platformVelocity.Velocity);
+                _rigidbody.AddForce(platformVelocity.Velocity / Time.fixedDeltaTime);
+            }
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -98,11 +103,6 @@ public class PlayerController : MonoBehaviour
         if (IsTouchingGroundLayer(collision))
         {
             _collidingWithGround = false;
-        }
-
-        if (collision.CompareTag("Platform"))
-        {
-            transform.SetParent(null);
         }
     }
 

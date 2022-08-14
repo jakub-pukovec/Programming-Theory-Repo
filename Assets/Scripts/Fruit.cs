@@ -15,7 +15,7 @@ public abstract class Fruit : MonoBehaviour
 
     private void Awake()
     {
-        _scoreText = GameObject.Find("ScoreText").GetComponent<TMP_Text>();
+        _scoreText = GameObject.Find("ScoreCanvas").transform.Find("ScoreText").GetComponent<TMP_Text>();
         _itemInfo = GameObject.Find("ItemInfo");
         _infoTitleText = _itemInfo.transform.Find("TitleText").GetComponent<TMP_Text>();
         _infoScoreText = _itemInfo.transform.Find("ScoreText").GetComponent<TMP_Text>();
@@ -60,5 +60,13 @@ public abstract class Fruit : MonoBehaviour
     private void OnMouseExit()
     {
         _itemInfo.SetActive(false);
+    }
+
+    private void OnDisable()
+    {
+        if (_itemInfo != null)
+        {
+            _itemInfo.SetActive(false);
+        }
     }
 }

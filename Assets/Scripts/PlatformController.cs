@@ -13,8 +13,8 @@ public class PlatformController : MonoBehaviour, ISwitchable, IVelocity
     private Rigidbody2D _ribidBody;
     private WaitForSeconds _waypointWaitTimeWaitForSeconds;
     private int _waypointIndex;
-    private Vector3 _targetPosition;
-    private Vector3 _currentVelocity;
+    private Vector2 _targetPosition;
+    private Vector2 _currentVelocity;
 
     public bool IsSwitchedOn => _isMoving;
 
@@ -43,10 +43,10 @@ public class PlatformController : MonoBehaviour, ISwitchable, IVelocity
     {
         while (true)
         {
-            while (Vector3.Distance(_targetPosition, _ribidBody.position) > _deadZone)
+            while (Vector2.Distance(_targetPosition, _ribidBody.position) > _deadZone)
             {
-                Vector3 newPosition = Vector3.SmoothDamp(_ribidBody.position, _targetPosition, ref _currentVelocity, _smoothDampTime);
-                if (Vector3.Distance(newPosition, _targetPosition) <= _deadZone)
+                Vector2 newPosition = Vector2.SmoothDamp(_ribidBody.position, _targetPosition, ref _currentVelocity, _smoothDampTime);
+                if (Vector2.Distance(newPosition, _targetPosition) <= _deadZone)
                 {
                     newPosition = _targetPosition;
                 }
@@ -71,7 +71,7 @@ public class PlatformController : MonoBehaviour, ISwitchable, IVelocity
     {
         SetMovement(false);
         StopAllCoroutines();
-        _currentVelocity = Vector3.zero;
+        _currentVelocity = Vector2.zero;
     }
 
     private void SetMovement(bool isMoving)

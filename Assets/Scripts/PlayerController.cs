@@ -78,6 +78,11 @@ public class PlayerController : MonoBehaviour
         {
             fruit.Pickup();
         }
+
+        if (collision.CompareTag("VerticalPlatform"))
+        {
+            transform.SetParent(collision.transform);
+        }
     }
 
     private void OnTriggerStay2D(Collider2D collision)
@@ -103,6 +108,11 @@ public class PlayerController : MonoBehaviour
         if (IsTouchingGroundLayer(collision))
         {
             _collidingWithGround = false;
+        }
+
+        if (collision.CompareTag("VerticalPlatform"))
+        {
+            transform.SetParent(null);
         }
     }
 

@@ -72,6 +72,12 @@ public class PlayerController : MonoBehaviour
         {
             _collidingWithGround = true;
         }
+
+        var fruit = collision.GetComponent<Fruit>();
+        if (fruit != null)
+        {
+            fruit.Pickup();
+        }
     }
 
     private void OnTriggerStay2D(Collider2D collision)

@@ -5,9 +5,10 @@ public class PlayerController : MonoBehaviour
 {
     private Rigidbody2D _rigidbody;
     private bool _jumpTriggered;
-    private bool _collidingWithGround;
+    private bool _isGrounded;
     private float _horizontalMovement;
     private float _originalScaleX;
+    private Animator _animator;
 
     [SerializeField] private float _movementSpeed = 1.5f;
     [SerializeField] private float _jumpForce = 3.5f;
@@ -18,6 +19,7 @@ public class PlayerController : MonoBehaviour
     {
         _rigidbody = GetComponent<Rigidbody2D>();
         _originalScaleX = MathF.Abs(transform.localScale.x);
+        _animator = GetComponent<Animator>();
     }
 
     private void Update()
@@ -37,6 +39,15 @@ public class PlayerController : MonoBehaviour
         TreatJumpIfNeeded();
 
         _rigidbody.velocity = new Vector2(_horizontalMovement * _movementSpeed, _rigidbody.velocity.y);
+
+        Animate();
+    }
+
+    private void Animate()
+    {
+        _animator.SetFloat("Speed", Mathf.Abs(_rigidbody.velocity.x));
+        _animator.SetFloat("DropSpeed", _rigidbody.velocity.y);
+        Debug.Log(_rigidbody.velocity.y);
     }
 
     private void TreatJumpIfNeeded()
@@ -44,9 +55,10 @@ public class PlayerController : MonoBehaviour
         if (_jumpTriggered)
         {
             _jumpTriggered = false;
-            if (IsGrounded())
+            if (_isGrounded)
             {
                 _rigidbody.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
+                _animator.SetBool("Jump", true);
             }
         }
     }
@@ -61,16 +73,12 @@ public class PlayerController : MonoBehaviour
         transform.localScale = localScale;
     }
 
-    private bool IsGrounded()
-    {
-        return _collidingWithGround;
-    }
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (IsTouchingGroundLayer(collision))
         {
-            _collidingWithGround = true;
+            _isGrounded = true;
+            _animator.SetBool("Jump", false);
         }
 
         var fruit = collision.GetComponent<Fruit>();
@@ -89,7 +97,7 @@ public class PlayerController : MonoBehaviour
     {
         if (IsTouchingGroundLayer(collision))
         {
-            _collidingWithGround = true;
+            _isGrounded = true;
         }
 
         if (collision.CompareTag("Platform"))
@@ -107,7 +115,7 @@ public class PlayerController : MonoBehaviour
     {
         if (IsTouchingGroundLayer(collision))
         {
-            _collidingWithGround = false;
+            _isGrounded = false;
         }
 
         if (collision.CompareTag("VerticalPlatform"))

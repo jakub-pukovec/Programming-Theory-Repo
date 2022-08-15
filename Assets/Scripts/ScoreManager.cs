@@ -3,10 +3,7 @@ using UnityEngine;
 
 public class ScoreManager : MonoBehaviour
 {
-    public event Action OnGoalReached;
-
-    [SerializeField] private int _scoreGoal = 125;
-    private bool _goalReached;
+    public event Action<int> OnScoreAdded;
 
     public static ScoreManager Instance { get; private set; }
     public int Score { get; private set; }
@@ -25,10 +22,6 @@ public class ScoreManager : MonoBehaviour
     public void AddScore(int scoreToAdd)
     {
         Score += scoreToAdd;
-        if (Score >= _scoreGoal && !_goalReached)
-        {
-            _goalReached = true;
-            OnGoalReached?.Invoke();
-        }
+        OnScoreAdded?.Invoke(Score);
     }
 }

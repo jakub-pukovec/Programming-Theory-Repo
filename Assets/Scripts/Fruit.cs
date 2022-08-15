@@ -16,7 +16,7 @@ public abstract class Fruit : MonoBehaviour
 
     private void Awake()
     {
-        _scoreText = GameObject.Find("ScoreCanvas").transform.Find("ScoreText").GetComponent<TMP_Text>();
+        _scoreText = GameObject.Find("OverlayCanvas").transform.Find("ScoreText").GetComponent<TMP_Text>();
         _itemInfo = GameObject.Find("ItemInfo");
         _infoTitleText = _itemInfo.transform.Find("TitleText").GetComponent<TMP_Text>();
         _infoDescriptionText = _itemInfo.transform.Find("ScoreText").GetComponent<TMP_Text>();

@@ -47,7 +47,6 @@ public class PlayerController : MonoBehaviour
     {
         _animator.SetFloat("Speed", Mathf.Abs(_rigidbody.velocity.x));
         _animator.SetFloat("DropSpeed", _rigidbody.velocity.y);
-        Debug.Log(_rigidbody.velocity.y);
     }
 
     private void TreatJumpIfNeeded()

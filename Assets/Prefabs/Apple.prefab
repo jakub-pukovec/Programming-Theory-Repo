@@ -124,3 +124,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9745e579444897c4481301bff5b318ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _infoPanelSize: {x: 200, y: 85}

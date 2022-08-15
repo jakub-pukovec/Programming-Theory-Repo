@@ -1,22 +1,18 @@
+using System;
 using TMPro;
 using UnityEngine;
 
 public class SwithController : MonoBehaviour
 {
     [SerializeField] GameObject _switchable;
+    [SerializeField] Vector2 _infoPanelSize = new Vector2(240, 125);
 
     private ISwitchable _switchableScript;
     private bool _isInTriggerZone;
-    private GameObject _itemInfo;
-    private TMP_Text _infoTitleText;
-    private TMP_Text _infoDescriptionText;
+    private ItemInfoUIManager _infoPanel;
 
     private void Awake()
     {
-        _itemInfo = GameObject.Find("ItemInfo");
-        _infoTitleText = _itemInfo.transform.Find("TitleText").GetComponent<TMP_Text>();
-        _infoDescriptionText = _itemInfo.transform.Find("ScoreText").GetComponent<TMP_Text>();
-
         _switchableScript = _switchable.GetComponent<ISwitchable>();
         if (_switchableScript == null)
         {
@@ -27,7 +23,7 @@ public class SwithController : MonoBehaviour
 
     private void Start()
     {
-        _itemInfo.SetActive(false);
+        _infoPanel = ItemInfoUIManager.Instance;
     }
 
     private void Update()
@@ -63,22 +59,22 @@ public class SwithController : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        _itemInfo.transform.position = transform.position + Vector3.up * .35f;
-        _itemInfo.SetActive(true);
-        _infoTitleText.text = "Platform Switch";
-        _infoDescriptionText.text = "Hit Use button [E] when touching the switch to switch platform on / off.";
+        _infoPanel.SetPosition(transform.position + Vector3.up * .35f);
+        _infoPanel.SetSize(_infoPanelSize.x, _infoPanelSize.y);
+        _infoPanel.Show();
+        _infoPanel.SetTitleAndDescription("Platform Switch", "Hit Use button [E] when touching the switch to switch platform on / off.");
     }
 
     private void OnMouseExit()
     {
-        _itemInfo.SetActive(false);
+        _infoPanel.Hide();
     }
 
     private void OnDisable()
     {
-        if (_itemInfo != null)
+        if (_infoPanel != null)
         {
-            _itemInfo.SetActive(false);
+            _infoPanel.Hide();
         }
     }
 }

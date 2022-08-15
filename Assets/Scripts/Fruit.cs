@@ -5,11 +5,11 @@ using UnityEngine;
 //Inheritance in all derived classes plus also in this one
 public abstract class Fruit : MonoBehaviour
 {
+    [SerializeField] Vector2 _infoPanelSize = new Vector2(200, 85);
+
     private TMP_Text _scoreText;
-    private TMP_Text _infoTitleText;
-    private TMP_Text _infoDescriptionText;
-    private GameObject _itemInfo;
     private ScoreManager _scoreManager;
+    private ItemInfoUIManager _infoPanel;
 
     protected abstract int ScorePoints { get; }
     protected abstract string Name { get; }
@@ -17,15 +17,12 @@ public abstract class Fruit : MonoBehaviour
     private void Awake()
     {
         _scoreText = GameObject.Find("OverlayCanvas").transform.Find("ScoreText").GetComponent<TMP_Text>();
-        _itemInfo = GameObject.Find("ItemInfo");
-        _infoTitleText = _itemInfo.transform.Find("TitleText").GetComponent<TMP_Text>();
-        _infoDescriptionText = _itemInfo.transform.Find("ScoreText").GetComponent<TMP_Text>();
     }
 
     private void Start()
     {
-        _itemInfo.SetActive(false);
         _scoreManager = ScoreManager.Instance;
+        _infoPanel = ItemInfoUIManager.Instance;
     }
 
     public void Pickup()
@@ -52,22 +49,22 @@ public abstract class Fruit : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        _itemInfo.transform.position = transform.position + Vector3.up * .35f;
-        _itemInfo.SetActive(true);
-        _infoTitleText.text = Name;
-        _infoDescriptionText.text = $"Adds to Score: {ScorePoints}";
+        _infoPanel.SetPosition(transform.position + Vector3.up * .35f);
+        _infoPanel.SetSize(_infoPanelSize.x, _infoPanelSize.y);
+        _infoPanel.Show();
+        _infoPanel.SetTitleAndDescription(Name, $"Adds to Score: {ScorePoints}");
     }
 
     private void OnMouseExit()
     {
-        _itemInfo.SetActive(false);
+        _infoPanel.Hide();
     }
 
     private void OnDisable()
     {
-        if (_itemInfo != null)
+        if (_infoPanel != null)
         {
-            _itemInfo.SetActive(false);
+            _infoPanel.Hide();
         }
     }
 }
